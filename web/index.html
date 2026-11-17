@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora Jobs Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ======================================================================
+     JOB CREATOR
+     ====================================================================== -->
+<div id="creator" class="creator hidden">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19V7l8-4 8 4v12"/>
+                    <path d="M4 11h16"/>
+                    <path d="M12 3v16"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <strong>Jobs Creator</strong>
+                <span id="brand-version">v1.0.0</span>
+            </div>
+        </div>
+
+        <nav id="nav" class="nav"></nav>
+
+        <div class="env" id="env"></div>
+
+        <button class="btn btn-ghost btn-block" id="btn-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span class="label">Close</span>
+        </button>
+    </aside>
+
+    <main class="content">
+        <header class="topbar">
+            <div class="topbar-titles">
+                <h1 id="section-title">Dashboard</h1>
+                <p id="section-sub">Overview of every job on this server</p>
+            </div>
+            <div class="topbar-actions" id="topbar-actions"></div>
+        </header>
+
+        <div class="toolbar" id="toolbar"></div>
+
+        <section class="view" id="view"></section>
+    </main>
+</div>
+
+<!-- ======================================================================
+     EDITOR DRAWER
+     ====================================================================== -->
+<div id="drawer" class="drawer hidden">
+    <div class="drawer-backdrop" data-close-drawer></div>
+    <div class="drawer-panel">
+        <header class="drawer-head">
+            <div>
+                <h2 id="drawer-title">Editor</h2>
+                <p id="drawer-sub"></p>
+            </div>
+            <button class="btn btn-icon btn-ghost" data-close-drawer aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </header>
+
+        <nav class="drawer-tabs" id="drawer-tabs"></nav>
+
+        <div class="drawer-body" id="drawer-body"></div>
+
+        <footer class="drawer-foot">
+            <div class="drawer-foot-left" id="drawer-foot-left"></div>
+            <div class="drawer-foot-right">
+                <button class="btn btn-ghost" data-close-drawer>Cancel</button>
+                <button class="btn btn-primary" id="drawer-save">Save</button>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- ======================================================================
+     CONFIRM DIALOG
+     ====================================================================== -->
+<div id="confirm" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+        <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/>
+            </svg>
+        </div>
+        <h3 id="confirm-title">Are you sure?</h3>
+        <p id="confirm-message"></p>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+            <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======================================================================
+     IN-WORLD DIALOGS (ox_lib fallback: menu / input / confirm)
+     ====================================================================== -->
+<div id="dialog" class="modal hidden">
+    <div class="modal-backdrop" id="dialog-backdrop"></div>
+    <div class="modal-card dialog-card">
+        <h3 id="dialog-title"></h3>
+        <div id="dialog-body"></div>
+        <div class="modal-actions" id="dialog-actions"></div>
+    </div>
+</div>
+
+<!-- ======================================================================
+     BOSS MENU
+     ====================================================================== -->
+<div id="boss" class="boss hidden">
+    <div class="boss-panel">
+        <header class="boss-head">
+            <div>
+                <h2 id="boss-title">Boss Menu</h2>
+                <p id="boss-sub"></p>
+            </div>
+            <div class="boss-head-right">
+                <div class="boss-balance">
+                    <span>Society funds</span>
+                    <strong id="boss-balance">$0</strong>
+                </div>
+                <button class="btn btn-icon btn-ghost" id="boss-close" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <nav class="boss-tabs" id="boss-tabs"></nav>
+        <div class="boss-body" id="boss-body"></div>
+    </div>
+</div>
+
+<!-- ======================================================================
+     PLACEMENT HINT (shown while the page hides for world placement)
+     ====================================================================== -->
+<div id="placement" class="placement hidden">
+    <div class="placement-card">
+        <div class="spinner"></div>
+        <strong>Placing this location in the world</strong>
+        <span>Walk to the spot you want, then confirm.</span>
+        <div class="placement-keys">
+            <kbd>ENTER</kbd><span style="font-size:11px">save</span>
+            <kbd>BACKSPACE</kbd><span style="font-size:11px">cancel</span>
+            <kbd>ARROWS</kbd><span style="font-size:11px">height / rotate</span>
+            <kbd>G</kbd><kbd>H</kbd><span style="font-size:11px">radius</span>
+        </div>
+    </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
